@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { WelcomePage } from './features/public/WelcomePage';
 import { LoginPage } from './features/auth/LoginPage';
 import { ProtectedLayout } from './components/layout/ProtectedLayout';
 import { ProtectedRoute } from './routes/ProtectedRoute';
@@ -13,9 +14,13 @@ export function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public Portal Landing Page */}
+        <Route path="/" element={<WelcomePage />} />
+        
+        {/* Dedicated Login Route */}
         <Route path="/login" element={<LoginPage />} />
 
-        {/* Protected Routes */}
+        {/* Protected App Routes */}
         <Route element={<ProtectedRoute />}>
           <Route element={<ProtectedLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
@@ -31,12 +36,11 @@ export function App() {
             <Route element={<RoleRoute allowedRoles={['ADMIN']} />}>
               <Route path="/audit-logs" element={<AuditLogsPage />} />
             </Route>
-
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
           </Route>
         </Route>
 
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* Catch-all redirects to public portal */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
