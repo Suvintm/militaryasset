@@ -18,7 +18,9 @@ import {
   ChevronRight,
   Truck,
   Award,
-  ArrowLeft
+  ArrowLeft,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import apiClient from '../../api/axios';
@@ -38,6 +40,7 @@ export const WelcomePage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Helper to open modal directly to a role
@@ -855,153 +858,264 @@ export const WelcomePage: React.FC = () => {
         </div>
       </footer>
 
-      {/* 11. DYNAMIC TWO-STAGE AUTHENTICATION MODAL (Choose Role -> Role Login Form) */}
+      {/* 11. DYNAMIC TWO-STAGE AUTHENTICATION MODAL (Choose Role -> In-Place Role Login Form) */}
       {showLoginModal && (
         <div 
           onClick={() => {
             setShowLoginModal(false);
             setSelectedRole(null);
           }}
-          className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200 cursor-pointer"
+          className="fixed inset-0 z-50 bg-black/65 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-200 cursor-pointer overflow-y-auto"
         >
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative transition-all cursor-default"
+            className="bg-[#fafaf9] border border-slate-200/90 rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 max-w-2xl sm:max-w-3xl w-full shadow-2xl relative transition-all cursor-default overflow-hidden my-auto"
           >
+            {/* Circular Close Button at Top Right */}
             <button
               onClick={() => {
                 setShowLoginModal(false);
                 setSelectedRole(null);
               }}
-              className="absolute top-5 right-5 text-slate-400 hover:text-white p-1 rounded-full text-sm cursor-pointer"
+              className="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-slate-200/80 hover:bg-slate-300 text-slate-600 flex items-center justify-center transition-colors shadow-xs cursor-pointer z-30"
+              title="Close Modal"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
 
-            {/* STAGE 1: ROLE SELECTION (When no role has been chosen yet) */}
+            {/* STAGE 1: ROLE SELECTION (Exact match to uploaded reference mockup) */}
             {!selectedRole ? (
-              <div className="space-y-6">
+              <div className="relative">
+                {/* Top Ministry Header */}
                 <div className="text-center">
-                  <div className="inline-flex h-12 w-12 rounded-2xl bg-amber-500 text-slate-950 font-black text-xl items-center justify-center mb-2 shadow-md">
-                    M
+                  <img
+                    src="/emblem.png"
+                    alt="National Emblem of India"
+                    className="h-11 sm:h-12 w-auto object-contain mx-auto"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                    }}
+                  />
+                  <div className="mt-1 space-y-0.5">
+                    <div className="text-[12px] font-bold text-slate-800 tracking-wide leading-tight">
+                      रक्षा मंत्रालय
+                    </div>
+                    <div className="text-[13px] font-black text-slate-900 tracking-wider uppercase leading-tight font-cinzel">
+                      MINISTRY OF DEFENCE
+                    </div>
+                    <div className="text-[9.5px] font-semibold text-slate-500 tracking-widest uppercase">
+                      GOVERNMENT OF INDIA
+                    </div>
                   </div>
-                  <h2 className="text-xl font-bold text-white">Select Your Operational Role</h2>
-                  <p className="text-xs text-slate-400 mt-1">
-                    Choose your credentialed role to launch the appropriate login gateway.
+
+                  {/* Tricolor Accent Mini Bar */}
+                  <div className="flex h-1 w-14 rounded-full overflow-hidden mx-auto my-2 shadow-2xs">
+                    <div className="w-1/3 bg-[#FF9933]" />
+                    <div className="w-1/3 bg-white border-y border-slate-200" />
+                    <div className="w-1/3 bg-[#138808]" />
+                  </div>
+
+                  {/* System Subtitle */}
+                  <div className="text-[10px] font-bold text-slate-400 tracking-[0.22em] uppercase">
+                    MILITARY ASSET MANAGEMENT SYSTEM
+                  </div>
+
+                  {/* Headline */}
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+                    Select Your Operational Role
+                  </h2>
+                  <p className="text-xs text-slate-500 max-w-md mx-auto mt-1 leading-snug">
+                    Choose your credentialed role to access the appropriate portal and functionalities.
                   </p>
                 </div>
 
-                <div className="space-y-3">
-                  {/* Option 1: System Administrator */}
-                  <button
+                {/* The 3 Role Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4 mt-5 relative z-10">
+                  {/* Card 1: System Administrator */}
+                  <div
                     onClick={() => handleSelectRole('ADMIN')}
-                    className="w-full p-4 rounded-2xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700/80 hover:border-indigo-500 transition-all flex items-center justify-between text-left group cursor-pointer"
+                    className="group rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col text-left cursor-pointer"
                   >
-                    <div className="flex items-center gap-3.5">
-                      <div className="h-11 w-11 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
-                        <Award className="w-6 h-6" />
-                      </div>
+                    <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+                      <img
+                        src="/role_admin.jpg"
+                        alt="System Administrator"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="-mt-5 mx-auto relative z-10 w-10 h-10 rounded-full bg-[#1e2a1b] border-2 border-white shadow-md flex items-center justify-center text-amber-400">
+                      <Award className="w-5 h-5 text-amber-400" />
+                    </div>
+                    <div className="px-3.5 pt-1.5 pb-3.5 text-center flex-1 flex flex-col justify-between">
                       <div>
-                        <div className="font-bold text-sm text-white group-hover:text-indigo-400 transition">
+                        <h3 className="font-bold text-slate-900 text-sm sm:text-base leading-tight">
                           System Administrator
+                        </h3>
+                        <p className="text-[11px] font-semibold text-slate-500 mt-0.5">
+                          HQ Directorate General
+                        </p>
+                        <p className="text-[11px] text-slate-600 leading-snug mt-1.5 min-h-[30px]">
+                          Full nationwide access & audit logs
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2.5 pt-3 mt-auto justify-start px-1">
+                        <div className="w-7 h-7 rounded-full bg-[#354032] group-hover:bg-[#1a2318] text-white flex items-center justify-center text-xs transition shadow-xs">
+                          <ArrowRight className="w-3.5 h-3.5" />
                         </div>
-                        <div className="text-[11px] text-slate-400">
-                          HQ Directorate General • Full nationwide access & audit logs
-                        </div>
+                        <div className="h-1 w-12 rounded-full bg-[#9e7d3b]" />
                       </div>
                     </div>
-                    <ChevronRight className="w-5 h-5 text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 transition" />
-                  </button>
+                  </div>
 
-                  {/* Option 2: Base Commander */}
-                  <button
+                  {/* Card 2: Base Commander */}
+                  <div
                     onClick={() => handleSelectRole('BASE_COMMANDER', 'north')}
-                    className="w-full p-4 rounded-2xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700/80 hover:border-amber-500 transition-all flex items-center justify-between text-left group cursor-pointer"
+                    className="group rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col text-left cursor-pointer"
                   >
-                    <div className="flex items-center gap-3.5">
-                      <div className="h-11 w-11 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
-                        <ShieldAlert className="w-6 h-6" />
-                      </div>
+                    <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+                      <img
+                        src="/role_cmdr.jpg"
+                        alt="Base Commander"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="-mt-5 mx-auto relative z-10 w-10 h-10 rounded-full bg-[#273a26] border-2 border-white shadow-md flex items-center justify-center text-emerald-300">
+                      <ShieldAlert className="w-5 h-5 text-emerald-300" />
+                    </div>
+                    <div className="px-3.5 pt-1.5 pb-3.5 text-center flex-1 flex flex-col justify-between">
                       <div>
-                        <div className="font-bold text-sm text-white group-hover:text-amber-400 transition">
+                        <h3 className="font-bold text-slate-900 text-sm sm:text-base leading-tight">
                           Base Commander
+                        </h3>
+                        <p className="text-[11px] font-semibold text-slate-500 mt-0.5">
+                          Camp North / Camp South
+                        </p>
+                        <p className="text-[11px] text-slate-600 leading-snug mt-1.5 min-h-[30px]">
+                          Transfer approvals & custody management
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2.5 pt-3 mt-auto justify-start px-1">
+                        <div className="w-7 h-7 rounded-full bg-[#415542] group-hover:bg-[#253626] text-white flex items-center justify-center text-xs transition shadow-xs">
+                          <ArrowRight className="w-3.5 h-3.5" />
                         </div>
-                        <div className="text-[11px] text-slate-400">
-                          Camp North / Camp South • Transfer approvals & custody
-                        </div>
+                        <div className="h-1 w-12 rounded-full bg-[#5d735e]" />
                       </div>
                     </div>
-                    <ChevronRight className="w-5 h-5 text-slate-500 group-hover:text-amber-400 group-hover:translate-x-0.5 transition" />
-                  </button>
+                  </div>
 
-                  {/* Option 3: Logistics Officer */}
-                  <button
+                  {/* Card 3: Logistics Officer */}
+                  <div
                     onClick={() => handleSelectRole('LOGISTICS_OFFICER')}
-                    className="w-full p-4 rounded-2xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700/80 hover:border-emerald-500 transition-all flex items-center justify-between text-left group cursor-pointer"
+                    className="group rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col text-left cursor-pointer"
                   >
-                    <div className="flex items-center gap-3.5">
-                      <div className="h-11 w-11 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
-                        <Truck className="w-6 h-6" />
-                      </div>
+                    <div className="relative h-28 sm:h-32 w-full overflow-hidden bg-slate-100">
+                      <img
+                        src="/role_logistics.jpg"
+                        alt="Logistics Officer"
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="-mt-5 mx-auto relative z-10 w-10 h-10 rounded-full bg-[#4f3d27] border-2 border-white shadow-md flex items-center justify-center text-amber-200">
+                      <Truck className="w-5 h-5 text-amber-200" />
+                    </div>
+                    <div className="px-3.5 pt-1.5 pb-3.5 text-center flex-1 flex flex-col justify-between">
                       <div>
-                        <div className="font-bold text-sm text-white group-hover:text-emerald-400 transition">
+                        <h3 className="font-bold text-slate-900 text-sm sm:text-base leading-tight">
                           Logistics Officer
+                        </h3>
+                        <p className="text-[11px] font-semibold text-slate-500 mt-0.5">
+                          Ordnance Corps
+                        </p>
+                        <p className="text-[11px] text-slate-600 leading-snug mt-1.5 min-h-[30px]">
+                          Record purchases & asset transfers
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2.5 pt-3 mt-auto justify-start px-1">
+                        <div className="w-7 h-7 rounded-full bg-[#6d5940] group-hover:bg-[#453624] text-white flex items-center justify-center text-xs transition shadow-xs">
+                          <ArrowRight className="w-3.5 h-3.5" />
                         </div>
-                        <div className="text-[11px] text-slate-400">
-                          Ordnance Corps • Record purchases & asset transfers
-                        </div>
+                        <div className="h-1 w-12 rounded-full bg-[#aa8a5a]" />
                       </div>
                     </div>
-                    <ChevronRight className="w-5 h-5 text-slate-500 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition" />
-                  </button>
+                  </div>
                 </div>
 
-                <div className="text-center pt-2 text-[11px] text-slate-500">
-                  Select any role to auto-configure your security session.
-                </div>
-              </div>
-            ) : (
-              /* STAGE 2: ROLE-SPECIFIC LOGIN FORM */
-              <div className="space-y-5">
-                {/* Header with Back button */}
-                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <button
-                    onClick={() => setSelectedRole(null)}
-                    className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white transition cursor-pointer"
-                  >
-                    <ArrowLeft className="w-4 h-4" />
-                    <span>Change Role</span>
-                  </button>
-
-                  <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider bg-slate-800 text-amber-400 border border-slate-700">
-                    {selectedRole === 'ADMIN' ? 'HQ Command' : selectedRole === 'BASE_COMMANDER' ? 'Base Command' : 'Supply Corps'}
+                {/* Bottom Security Pill */}
+                <div className="text-center mt-5 relative z-10">
+                  <span className="inline-flex items-center gap-2 text-[11px] font-semibold text-slate-700 bg-white/95 border border-slate-200 px-4 py-1.5 rounded-full shadow-xs backdrop-blur-xs">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Secure Access</span>
+                    <span className="text-slate-300 font-light">|</span>
+                    <span>Role-Based Permissions</span>
+                    <span className="text-slate-300 font-light">|</span>
+                    <span>Audited Operations</span>
                   </span>
                 </div>
 
-                {/* Role Title & Description */}
-                <div>
-                  <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                    {selectedRole === 'ADMIN' && <Award className="w-5 h-5 text-indigo-400" />}
-                    {selectedRole === 'BASE_COMMANDER' && <ShieldAlert className="w-5 h-5 text-amber-400" />}
-                    {selectedRole === 'LOGISTICS_OFFICER' && <Truck className="w-5 h-5 text-emerald-400" />}
-                    <span>
-                      {selectedRole === 'ADMIN' && 'System Administrator Login'}
-                      {selectedRole === 'BASE_COMMANDER' && 'Base Commander Login'}
-                      {selectedRole === 'LOGISTICS_OFFICER' && 'Logistics Officer Login'}
-                    </span>
-                  </h2>
-                  <p className="text-xs text-slate-400 mt-1">
-                    {selectedRole === 'ADMIN' && 'Full administrative clearance for all military bases & audit records.'}
-                    {selectedRole === 'BASE_COMMANDER' && 'Authorized command over base inventory, approvals and weapon assignment.'}
-                    {selectedRole === 'LOGISTICS_OFFICER' && 'Authorized personnel for recording purchases & inter-base shipments.'}
-                  </p>
+                {/* Troops Silhouette Pinned at Bottom of Modal */}
+                <div className="relative mt-2 -mb-5 -mx-5 sm:-mx-7 overflow-hidden pointer-events-none opacity-85">
+                  <img
+                    src="/modal_silhouette.png"
+                    alt="Military silhouette"
+                    className="w-full h-14 sm:h-16 object-cover object-top"
+                  />
+                </div>
+              </div>
+            ) : (
+              /* STAGE 2: IN-MODAL ROLE LOGIN FORM */
+              <div className="space-y-4 relative">
+                {/* Back to Role Selection Button */}
+                <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                  <button
+                    onClick={() => {
+                      setSelectedRole(null);
+                      setError(null);
+                    }}
+                    className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition cursor-pointer active:scale-95"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <span>← Back to Role Selection</span>
+                  </button>
+
+                  <span className="text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
+                    {selectedRole === 'ADMIN' ? 'HQ Clearance' : selectedRole === 'BASE_COMMANDER' ? 'Base Clearance' : 'Ordnance Clearance'}
+                  </span>
+                </div>
+
+                {/* Role Header Banner */}
+                <div className="flex items-center gap-3.5 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                  <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border-2 border-slate-300 shadow-xs">
+                    <img
+                      src={
+                        selectedRole === 'ADMIN'
+                          ? '/role_admin.jpg'
+                          : selectedRole === 'BASE_COMMANDER'
+                          ? '/role_cmdr.jpg'
+                          : '/role_logistics.jpg'
+                      }
+                      alt="Role"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-slate-900 leading-tight">
+                      {selectedRole === 'ADMIN' && 'System Administrator Portal'}
+                      {selectedRole === 'BASE_COMMANDER' && 'Base Commander Portal'}
+                      {selectedRole === 'LOGISTICS_OFFICER' && 'Logistics Officer Portal'}
+                    </h3>
+                    <p className="text-xs text-slate-500">
+                      {selectedRole === 'ADMIN' && 'Full nationwide asset control, system ledger and audit logs.'}
+                      {selectedRole === 'BASE_COMMANDER' && 'Camp custody control, inter-base transfer approvals & personnel assignments.'}
+                      {selectedRole === 'LOGISTICS_OFFICER' && 'Asset procurement recording, stock receipts & transit dispatches.'}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Base Commander Toggle (Camp North vs Camp South) */}
                 {selectedRole === 'BASE_COMMANDER' && (
-                  <div className="p-3 bg-slate-800/80 rounded-2xl border border-slate-700/80 space-y-2">
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-amber-400">
-                      Select Assigned Base Jurisdiction:
+                  <div className="p-3 bg-amber-50/60 rounded-2xl border border-amber-200/80 space-y-2">
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-amber-900">
+                      Select Base Jurisdiction:
                     </label>
                     <div className="grid grid-cols-2 gap-2">
                       <button
@@ -1009,11 +1123,11 @@ export const WelcomePage: React.FC = () => {
                         onClick={() => handleCommanderBaseToggle('north')}
                         className={`py-2 px-3 rounded-full text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                           commanderBase === 'north'
-                            ? 'bg-amber-500 text-slate-950 shadow-sm'
-                            : 'bg-slate-700/60 text-slate-300 hover:bg-slate-700'
+                            ? 'bg-[#123824] text-white shadow-sm'
+                            : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
                         }`}
                       >
-                        <span>Camp North</span>
+                        <span>Camp North (Northern Sector)</span>
                         {commanderBase === 'north' && '✓'}
                       </button>
 
@@ -1022,11 +1136,11 @@ export const WelcomePage: React.FC = () => {
                         onClick={() => handleCommanderBaseToggle('south')}
                         className={`py-2 px-3 rounded-full text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer ${
                           commanderBase === 'south'
-                            ? 'bg-amber-500 text-slate-950 shadow-sm'
-                            : 'bg-slate-700/60 text-slate-300 hover:bg-slate-700'
+                            ? 'bg-[#123824] text-white shadow-sm'
+                            : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
                         }`}
                       >
-                        <span>Camp South</span>
+                        <span>Camp South (Deccan Logistics)</span>
                         {commanderBase === 'south' && '✓'}
                       </button>
                     </div>
@@ -1034,15 +1148,15 @@ export const WelcomePage: React.FC = () => {
                 )}
 
                 {error && (
-                  <div className="p-2.5 rounded-2xl bg-red-950/60 border border-red-800 text-red-300 text-xs">
+                  <div className="p-3 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs font-medium">
                     {error}
                   </div>
                 )}
 
-                {/* Credentials Form */}
-                <form onSubmit={handleLoginSubmit} className="space-y-4">
+                {/* In-Modal Credentials Form */}
+                <form onSubmit={handleLoginSubmit} className="space-y-3.5">
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
                       Personnel ID / Email
                     </label>
                     <input
@@ -1050,29 +1164,48 @@ export const WelcomePage: React.FC = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-full text-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-full text-slate-900 text-xs placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#123824] focus:border-transparent transition"
                       placeholder="user@forces.gov"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                    <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1">
                       Security Password
                     </label>
-                    <input
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-full text-white text-xs placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
-                      placeholder="••••••••"
-                    />
+                    <div className="relative">
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className="w-full px-4 py-2.5 pr-10 bg-white border border-slate-300 rounded-full text-slate-900 text-xs placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#123824] focus:border-transparent transition"
+                        placeholder="••••••••"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Demo Credential Quick Fill Tag */}
+                  <div className="text-[11px] text-slate-500 bg-slate-50 border border-slate-200 rounded-full px-3 py-1 flex items-center justify-between">
+                    <span>
+                      Demo credentials: <strong className="text-slate-700">{email}</strong>
+                    </span>
+                    <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      Auto-filled
+                    </span>
                   </div>
 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-full text-xs transition shadow-md cursor-pointer flex items-center justify-center gap-2 active:scale-95"
+                    className="w-full py-3 bg-[#123824] hover:bg-[#0c2718] text-white font-bold rounded-full text-xs transition shadow-md cursor-pointer flex items-center justify-center gap-2 active:scale-98 disabled:opacity-70"
                   >
                     <Lock className="w-3.5 h-3.5" />
                     <span>
@@ -1080,7 +1213,7 @@ export const WelcomePage: React.FC = () => {
                         ? 'Authenticating...'
                         : `Sign In as ${
                             selectedRole === 'ADMIN'
-                              ? 'Administrator'
+                              ? 'System Administrator'
                               : selectedRole === 'BASE_COMMANDER'
                               ? `Commander (${commanderBase === 'north' ? 'Camp North' : 'Camp South'})`
                               : 'Logistics Officer'
@@ -1090,9 +1223,13 @@ export const WelcomePage: React.FC = () => {
                   </button>
                 </form>
 
-                {/* Demo Credentials Info note */}
-                <div className="pt-2 text-[11px] text-slate-400 text-center">
-                  Pre-configured with official take-home screening credentials for instant access.
+                {/* Bottom Troops Silhouette Graphic */}
+                <div className="relative mt-2 -mb-5 -mx-5 sm:-mx-7 overflow-hidden pointer-events-none opacity-60">
+                  <img
+                    src="/modal_silhouette.png"
+                    alt="Military silhouette"
+                    className="w-full h-10 sm:h-12 object-cover object-top"
+                  />
                 </div>
               </div>
             )}
