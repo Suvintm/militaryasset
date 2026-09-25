@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { WelcomePage } from './features/public/WelcomePage';
-import { LoginPage } from './features/auth/LoginPage';
 import { ProtectedLayout } from './components/layout/ProtectedLayout';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { RoleRoute } from './routes/RoleRoute';
@@ -17,8 +16,8 @@ export function App() {
         {/* Public Portal Landing Page */}
         <Route path="/" element={<WelcomePage />} />
         
-        {/* Dedicated Login Route */}
-        <Route path="/login" element={<LoginPage />} />
+        {/* Redirect /login to public portal popup */}
+        <Route path="/login" element={<Navigate to="/" replace />} />
 
         {/* Protected App Routes */}
         <Route element={<ProtectedRoute />}>

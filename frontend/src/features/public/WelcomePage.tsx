@@ -857,8 +857,17 @@ export const WelcomePage: React.FC = () => {
 
       {/* 11. DYNAMIC TWO-STAGE AUTHENTICATION MODAL (Choose Role -> Role Login Form) */}
       {showLoginModal && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative transition-all">
+        <div 
+          onClick={() => {
+            setShowLoginModal(false);
+            setSelectedRole(null);
+          }}
+          className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200 cursor-pointer"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative transition-all cursor-default"
+          >
             <button
               onClick={() => {
                 setShowLoginModal(false);
