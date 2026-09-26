@@ -55,6 +55,15 @@ export const errorHandler = (
     }
   }
 
+  // Prisma Database Connection/Initialization Errors
+  if (err instanceof Prisma.PrismaClientInitializationError) {
+    logger.error(err, 'Prisma database connection failed');
+    return res.status(503).json({
+      success: false,
+      message: 'Database connection failed. Please verify DATABASE_URL and network access.',
+    });
+  }
+
   logger.error(err, 'Unhandled server error');
 
   return res.status(500).json({
