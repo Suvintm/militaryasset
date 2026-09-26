@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Military Asset Management System (MAMS) - Architecture & System Documentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
+      @bottom-left {
+        content: "MAMS Technical Specification | Prepared by Suvin T M (suvintm1515@gmail.com)";
+        font-family: 'Inter', sans-serif;
+        font-size: 8pt;
+        color: #64748b;
+      }
+      @bottom-right {
+        content: "Page " counter(page);
+        font-family: 'Inter', sans-serif;
+        font-size: 8pt;
+        color: #64748b;
+      }
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1e293b;
+      background-color: #ffffff;
+      line-height: 1.55;
+      font-size: 11pt;
+    }
+    
+    .cover {
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 90vh;
+      border-left: 6px solid #1e3a1d;
+      padding-left: 36px;
+    }
+    
+    .emblem-header {
+      display: inline-block;
+      font-size: 11pt;
+      font-weight: 700;
+      color: #995c00;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+    
+    .title {
+      font-family: 'Cinzel', serif;
+      font-size: 26pt;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    
+    .subtitle {
+      font-size: 13pt;
+      font-weight: 500;
+      color: #475569;
+      margin-bottom: 32px;
+    }
+    
+    .meta-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 520px;
+      margin-top: 24px;
+    }
+    
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px dashed #e2e8f0;
+      font-size: 10pt;
+    }
+    .meta-row:last-child {
+      border-bottom: none;
+    }
+    .meta-label {
+      font-weight: 600;
+      color: #64748b;
+    }
+    .meta-val {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 17pt;
+      font-weight: 800;
+      color: #1e3a1d;
+      border-bottom: 2px solid #1e3a1d;
+      padding-bottom: 6px;
+      margin-top: 28px;
+      margin-bottom: 14px;
+      page-break-after: avoid;
+    }
+    
+    h2 {
+      font-size: 13pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      page-break-after: avoid;
+    }
+    
+    h3 {
+      font-size: 11pt;
+      font-weight: 600;
+      color: #334155;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      page-break-after: avoid;
+    }
+    
+    p {
+      margin-bottom: 10px;
+      text-align: justify;
+    }
+    
+    ul, ol {
+      margin-left: 20px;
+      margin-bottom: 12px;
+    }
+    
+    li {
+      margin-bottom: 4px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 9.5pt;
+      page-break-inside: avoid;
+    }
+    
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
+      text-align: left;
+    }
+    
+    th {
+      background-color: #f1f5f9;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-admin { background: #fee2e2; color: #991b1b; }
+    .badge-cmdr { background: #dcfce7; color: #166534; }
+    .badge-log { background: #fef3c7; color: #92400e; }
+    .badge-success { background: #ecfdf5; color: #047857; }
+    .badge-endpoint { background: #e0f2fe; color: #0369a1; font-family: 'JetBrains Mono', monospace; }
+    
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9pt;
+      background: #f1f5f9;
+      padding: 1px 4px;
+      border-radius: 3px;
+      color: #0f172a;
+    }
+    
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5pt;
+      line-height: 1.45;
+      overflow-x: auto;
+      margin: 12px 0;
+      page-break-inside: avoid;
+    }
+    
+    .callout {
+      background-color: #f0fdf4;
+      border-left: 4px solid #16a34a;
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      margin: 14px 0;
+      font-size: 10pt;
+    }
+    .callout-title {
+      font-weight: 700;
+      color: #166534;
+      margin-bottom: 4px;
+    }
+    
+    .page-break {
+      page-break-after: always;
+    }
+    
+    .credentials-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 14px 0;
+      page-break-inside: avoid;
+    }
+    
+    .cred-card {
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 12px;
+      background: #f8fafc;
+    }
+    .cred-role {
+      font-size: 9pt;
+      font-weight: 700;
+      color: #1e3a1d;
+      margin-bottom: 6px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 4px;
+    }
+    .cred-detail {
+      font-size: 8.5pt;
+      margin-bottom: 3px;
+      color: #475569;
+    }
+    .cred-detail strong {
+      color: #0f172a;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- COVER PAGE -->
+  <div class="cover">
+    <div class="emblem-header">Government of India &bull; Ministry of Defence</div>
+    <div class="title">Military Asset Management System (MAMS)</div>
+    <div class="subtitle">Complete Technical Architecture, Data Modeling, RBAC Enforcement & Operational Specification</div>
+    
+    <div class="meta-box">
+      <div class="meta-row">
+        <span class="meta-label">Lead Engineer & Architect:</span>
+        <span class="meta-val" style="color: #1e3a1d; font-size: 11pt;">Suvin T M</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Official Contact Email:</span>
+        <span class="meta-val"><code>suvintm1515@gmail.com</code></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Code Repository:</span>
+        <span class="meta-val"><a href="https://github.com/Suvintm/militaryasset" style="color: #0369a1; text-decoration: none; font-weight: 600;">github.com/Suvintm/militaryasset</a></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Live Frontend (Vercel):</span>
+        <span class="meta-val"><a href="https://militaryasset-three.vercel.app" style="color: #0369a1; text-decoration: none; font-weight: 600;">militaryasset-three.vercel.app</a></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Live Backend (Railway):</span>
+        <span class="meta-val"><a href="https://militaryasset-production.up.railway.app" style="color: #0369a1; text-decoration: none; font-weight: 600;">militaryasset-production.up.railway.app</a></span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Cloud Database (Neon):</span>
+        <span class="meta-val">Neon Serverless Cloud PostgreSQL</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Submission Date:</span>
+        <span class="meta-val">September 2026</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Verification Status:</span>
+        <span class="meta-val badge badge-success">Production Verified & Live</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <h1>1. Project Overview</h1>
+  <p>The <strong>Military Asset Management System (MAMS)</strong> is a mission-critical enterprise defence solution engineered to track, control, and audit the lifecycle of strategic military equipment (including armoured vehicles, armaments, 7.62mm/155mm munitions, and vital rations) across distributed operational sectors.</p>
+  
+  <h2>1.1 Core Objectives</h2>
+  <ul>
+    <li><strong>Perpetual Balance Ledger:</strong> Real-time tracking of Opening Balances, Net Movements, and Closing Balances adhering to the formula:
+      <code>Closing Balance = Opening Balance + (Purchases + Transfers In - Transfers Out) - (Assignments + Expenditures)</code>
+    </li>
+    <li><strong>Inter-Base Custody Tracking:</strong> Multi-state workflow governance (Pending &rarr; Approved &rarr; In-Transit &rarr; Completed / Cancelled) ensuring two-party custody confirmation between transferring and receiving bases.</li>
+    <li><strong>Personnel Accountability:</strong> Rigorous tracking of individual weaponry and equipment assignments with serial numbers, personnel identifiers, and return timestamps.</li>
+    <li><strong>Tamper-Resistant Audit Trail:</strong> Complete transactional logging of every mutation across the system for parliamentary and defence oversight.</li>
+  </ul>
+
+  <h2>1.2 Assumptions & System Boundaries</h2>
+  <ul>
+    <li><strong>Operational Boundaries:</strong> Bases operate within isolated inventory scopes. A Base Commander cannot modify assets or approve transfers outside their assigned military sector.</li>
+    <li><strong>Asset Atomic Integrity:</strong> Munitions and fuel are tracked in discrete metric units (rounds, litres). Stock balances can never drop below zero; atomic database transactions guarantee inventory consistency.</li>
+    <li><strong>Network Resiliency:</strong> The architecture supports low-bandwidth and high-latency military networks with sub-second REST response times and client-side token caching.</li>
+  </ul>
+
+  <!-- SECTION 2 -->
+  <h1>2. Tech Stack & Architecture Justification</h1>
+  <p>The system utilizes a modern, typed, multi-tier decoupled architecture designed for high availability, zero cold-starts, and rigid security boundaries.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Layer</th>
+        <th>Technology Chosen</th>
+        <th>Architectural Justification</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Frontend</strong></td>
+        <td>React 18, Vite, TypeScript, Tailwind CSS, Lucide Icons, Zustand</td>
+        <td>Fast HMR, compile-time type safety, lightweight bundle (~470 KB), responsive mobile-first UI for forward tactical terminals, atomic store management.</td>
+      </tr>
+      <tr>
+        <td><strong>Backend</strong></td>
+        <td>Node.js, Express.js, TypeScript, Zod, Pino Logger</td>
+        <td>High-throughput asynchronous I/O, declarative schema validation with Zod, structured high-speed JSON auditing with Pino.</td>
+      </tr>
+      <tr>
+        <td><strong>Database & ORM</strong></td>
+        <td>PostgreSQL 16 (Neon Serverless), Prisma ORM</td>
+        <td><strong>Why SQL/PostgreSQL over NoSQL:</strong> Military asset accounting requires ACID transactions, foreign key constraints (cascading approvals, stock locks), strict uniqueness guarantees, and complex aggregations (Opening/Closing balance calculations). NoSQL lacks deterministic cross-document transactional locks needed for physical munitions accountability.</td>
+      </tr>
+      <tr>
+        <td><strong>Cloud Infrastructure</strong></td>
+        <td>Vercel (Frontend Edge CDN) + Railway (Backend Microservice) + Neon (Cloud Pooler)</td>
+        <td>Global edge distribution with zero-downtime CI/CD deployment, automated SSL/TLS termination, and serverless pooled database connections.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 3 -->
+  <div class="page-break"></div>
+  <h1>3. Data Models & Database Schema</h1>
+  <p>The database schema is structured around 11 normalized relational entities enforced by strict foreign key relationships, check constraints, and composite unique indexes.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Table Name</th>
+        <th>Primary Keys & Relations</th>
+        <th>Purpose & Critical Attributes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>users</code></td>
+        <td><code>id (UUID PK)</code>, <code>base_id (FK &rarr; bases)</code></td>
+        <td>Stores credentials, pre-hashed bcrypt passwords, assigned operational roles (<code>ADMIN</code>, <code>BASE_COMMANDER</code>, <code>LOGISTICS_OFFICER</code>).</td>
+      </tr>
+      <tr>
+        <td><code>bases</code></td>
+        <td><code>id (UUID PK)</code></td>
+        <td>Military installations (e.g., Camp North, Camp South, Central Depot, Airbase East).</td>
+      </tr>
+      <tr>
+        <td><code>equipment_types</code></td>
+        <td><code>id (UUID PK)</code></td>
+        <td>Master equipment catalog with standardized categories (<code>WEAPON</code>, <code>VEHICLE</code>, <code>AMMUNITION</code>, <code>SUPPLY</code>).</td>
+      </tr>
+      <tr>
+        <td><code>stock_balances</code></td>
+        <td><code>id (UUID PK)</code>, <code>UNIQUE(base_id, equipment_type_id)</code></td>
+        <td>Real-time atomic ledger of physical stock on hand per base and equipment item.</td>
+      </tr>
+      <tr>
+        <td><code>purchases</code></td>
+        <td><code>id (UUID PK)</code>, <code>recorded_by_id (FK &rarr; users)</code></td>
+        <td>Inward procurement transactions with unit price, supplier name, and purchase timestamps.</td>
+      </tr>
+      <tr>
+        <td><code>transfers</code></td>
+        <td><code>from_base_id (FK)</code>, <code>to_base_id (FK)</code>, <code>approved_by_id (FK)</code></td>
+        <td>Inter-base asset relocations with state tracking (<code>PENDING</code>, <code>APPROVED</code>, <code>IN_TRANSIT</code>, <code>COMPLETED</code>).</td>
+      </tr>
+      <tr>
+        <td><code>transfer_events</code></td>
+        <td><code>transfer_id (FK &rarr; transfers)</code></td>
+        <td>Immutable historical log tracking who changed the transfer state and why.</td>
+      </tr>
+      <tr>
+        <td><code>assignments</code></td>
+        <td><code>base_id (FK)</code>, <code>assigned_by_id (FK)</code></td>
+        <td>Armament issuance to military personnel (Army ID, Name, Return date, Status).</td>
+      </tr>
+      <tr>
+        <td><code>expenditures</code></td>
+        <td><code>base_id (FK)</code>, <code>expended_by_id (FK)</code></td>
+        <td>Consumed assets (training rounds, diesel fuel, live-fire exercise munitions).</td>
+      </tr>
+      <tr>
+        <td><code>audit_logs</code></td>
+        <td><code>id (UUID PK)</code>, <code>user_id (FK)</code></td>
+        <td>Immutable transactional ledger recording user actions, IP, user-agent, route, and payloads.</td>
+      </tr>
+      <tr>
+        <td><code>refresh_tokens</code></td>
+        <td><code>user_id (FK &rarr; users)</code></td>
+        <td>Secure cryptographic rotation tokens for 7-day extended session management.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 4 -->
+  <h1>4. Role-Based Access Control (RBAC)</h1>
+  <p>Security is enforced through a two-stage perimeter: cryptographic JSON Web Token (JWT) verification followed by role and base-level permission middleware.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Role</th>
+        <th>Scope of Authority</th>
+        <th>Permitted Operations</th>
+        <th>Restricted Operations</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-admin">ADMIN</span></td>
+        <td>Nationwide (All Bases)</td>
+        <td>Full CRUD access to all bases, stock adjustments, purchase authorization, nationwide audits, user management.</td>
+        <td>None (HQ Master Clearance).</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-cmdr">BASE_COMMANDER</span></td>
+        <td>Assigned Base Only</td>
+        <td>Approve/reject transfers involving their base, manage local assignments & expenditures, view local ledger.</td>
+        <td>Cannot view or modify other bases' inventory; cannot initiate centralized depot purchases.</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-log">LOGISTICS_OFFICER</span></td>
+        <td>Ordnance & Procurement</td>
+        <td>Record incoming purchases, initiate transfer requests between bases, view catalog metrics.</td>
+        <td>Cannot approve transfers; cannot assign weapons to personnel; cannot access administrative audits.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="callout-title">Security Enforcement Mechanism</div>
+    All backend API routes pass through <code>authenticateToken</code>, which validates the RSA/HMAC signature and extracts user metadata. Specific routes then invoke <code>authorize(Role.ADMIN, Role.BASE_COMMANDER)</code>. For base-level operations, the controller automatically injects <code>req.user.baseId</code> for non-admins, preventing cross-tenant data leaks.
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="page-break"></div>
+  <h1>5. API Logging & Audit Ledger</h1>
+  <p>To comply with military transparency mandates, all state-mutating requests (POST, PUT, PATCH, DELETE) automatically trigger an audit record captured by the centralized audit interceptor.</p>
+  <ul>
+    <li><strong>Actor Attribution:</strong> Exact User ID, User Role, and originating Base ID.</li>
+    <li><strong>Network Metadata:</strong> Remote IPv4/IPv6 address and User-Agent signature.</li>
+    <li><strong>Payload Delta:</strong> Stores state snapshots in <code>payload_before</code> and <code>payload_after</code> JSONB columns.</li>
+    <li><strong>Non-Blocking Async Dispatch:</strong> Audit writes are dispatched asynchronously via Prisma without hindering HTTP request latency.</li>
+  </ul>
+
+  <!-- SECTION 6 -->
+  <h1>6. Setup & Execution Instructions</h1>
+
+  <h2>Option A: Cloud Live Environment (Instant Evaluation)</h2>
+  <ul>
+    <li><strong>Frontend Application:</strong> <a href="https://militaryasset-three.vercel.app">https://militaryasset-three.vercel.app</a></li>
+    <li><strong>Backend REST API:</strong> <a href="https://militaryasset-production.up.railway.app">https://militaryasset-production.up.railway.app</a></li>
+    <li><strong>API Health Check:</strong> <code>GET https://militaryasset-production.up.railway.app/health</code></li>
+  </ul>
+
+  <h2>Option B: Local Deployment with Docker Compose</h2>
+  <pre>
+# 1. Clone repository and start Docker PostgreSQL container
+git clone https://github.com/Suvintm/militaryasset.git
+cd militaryasset
+docker-compose up -d
+
+# 2. Setup and run Backend
+cd backend
+npm install
+npm run prisma:generate
+npm run prisma:push
+npm run prisma:seed
+npm run dev
+
+# 3. Setup and run Frontend (in a separate terminal)
+cd ../frontend
+npm install
+npm run dev
+# Access frontend at http://localhost:5173
+  </pre>
+
+  <h2>Option C: Restoring Database from SQL Dump</h2>
+  <pre>
+# Restore complete schema and seed data directly using PostgreSQL CLI:
+psql -h localhost -U postgres -d mams_db -f database_dump.sql
+  </pre>
+
+  <!-- SECTION 7 -->
+  <h1>7. Key API Endpoints (OpenAPI / REST Specification)</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Method & Route</th>
+        <th>Access Level</th>
+        <th>Description & Parameters</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>POST /api/v1/auth/login</code></td>
+        <td>Public</td>
+        <td>Authenticates user credentials; returns JWT access token & user profile.</td>
+      </tr>
+      <tr>
+        <td><code>GET /api/v1/dashboard/summary</code></td>
+        <td>Authenticated</td>
+        <td>Calculates Opening/Closing balances, Net Movement, and Assigned/Expended metrics. Supports <code>baseId</code>, <code>equipmentTypeId</code>, <code>from</code>, <code>to</code> filters.</td>
+      </tr>
+      <tr>
+        <td><code>GET /api/v1/dashboard/net-movement</code></td>
+        <td>Authenticated</td>
+        <td><strong>[Bonus Feature]</strong> Detailed breakdown of Purchases, Transfers In, and Transfers Out backing the Net Movement figure.</td>
+      </tr>
+      <tr>
+        <td><code>POST /api/v1/purchases</code></td>
+        <td>Admin, Logistics</td>
+        <td>Records asset procurement and atomically increments base stock balance.</td>
+      </tr>
+      <tr>
+        <td><code>POST /api/v1/transfers</code></td>
+        <td>Admin, Logistics</td>
+        <td>Initiates inter-base transfer in <code>PENDING</code> status.</td>
+      </tr>
+      <tr>
+        <td><code>PATCH /api/v1/transfers/:id/status</code></td>
+        <td>Admin, Base Cmdr</td>
+        <td>Approve, dispatch, or complete transfers with atomic dual-base stock adjustments.</td>
+      </tr>
+      <tr>
+        <td><code>POST /api/v1/assignments</code></td>
+        <td>Admin, Base Cmdr</td>
+        <td>Issues weapon/asset to personnel with military ID tracking.</td>
+      </tr>
+      <tr>
+        <td><code>POST /api/v1/expenditures</code></td>
+        <td>Admin, Base Cmdr</td>
+        <td>Logs expended munitions/fuel and decrements local inventory balance.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 8 -->
+  <div class="page-break"></div>
+  <h1>8. Verified Login Credentials</h1>
+  <p>The platform is pre-seeded with authorized credentials for all three operational tiers across all sectors:</p>
+
+  <div class="credentials-grid">
+    <div class="cred-card">
+      <div class="cred-role">System Administrator (HQ)</div>
+      <div class="cred-detail"><strong>Officer:</strong> General V. Sharma</div>
+      <div class="cred-detail"><strong>Email:</strong> <code>admin@forces.gov</code></div>
+      <div class="cred-detail"><strong>Password:</strong> <code>Admin@123</code></div>
+      <div class="cred-detail"><strong>Scope:</strong> Full Nationwide Clearance</div>
+    </div>
+    
+    <div class="cred-card">
+      <div class="cred-role">Base Commander (Sector North)</div>
+      <div class="cred-detail"><strong>Officer:</strong> Col. R. Singh</div>
+      <div class="cred-detail"><strong>Email:</strong> <code>cmdr.north@forces.gov</code></div>
+      <div class="cred-detail"><strong>Password:</strong> <code>Cmdr@123</code></div>
+      <div class="cred-detail"><strong>Base:</strong> Camp North</div>
+    </div>
+    
+    <div class="cred-card">
+      <div class="cred-role">Logistics Officer (Ordnance)</div>
+      <div class="cred-detail"><strong>Officer:</strong> Maj. A. Patel</div>
+      <div class="cred-detail"><strong>Email:</strong> <code>logistics@forces.gov</code></div>
+      <div class="cred-detail"><strong>Password:</strong> <code>Logistics@123</code></div>
+      <div class="cred-detail"><strong>Base:</strong> Central Depot Hub</div>
+    </div>
+  </div>
+
+  <div class="credentials-grid" style="grid-template-columns: 1fr;">
+    <div class="cred-card">
+      <div class="cred-role">Base Commander (Sector South)</div>
+      <div class="cred-detail"><strong>Officer:</strong> Col. K. Menon &nbsp;|&nbsp; <strong>Email:</strong> <code>cmdr.south@forces.gov</code> &nbsp;|&nbsp; <strong>Password:</strong> <code>Cmdr@123</code> &nbsp;|&nbsp; <strong>Base:</strong> Camp South</div>
+    </div>
+  </div>
+
+  <!-- SECTION 9 -->
+  <div class="page-break"></div>
+  <h1>9. CI/CD Pipeline & DevOps Architecture</h1>
+  <p>To adhere to strict defence software lifecycle standards, MAMS implements an automated, multi-stage <strong>Continuous Integration and Continuous Deployment (CI/CD)</strong> pipeline configured via GitHub Actions (<code>.github/workflows/ci-cd.yml</code>) combined with edge-native deployment hooks.</p>
+
+  <h2>9.1 Pipeline Workflow Stages</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Stage</th>
+        <th>Environment & Tooling</th>
+        <th>Execution Steps & Quality Checks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Backend CI</strong></td>
+        <td>Ubuntu 22.04, Node.js 20, npm cache</td>
+        <td>
+          <ul>
+            <li>Checks out codebase and restores cached npm dependencies.</li>
+            <li>Executes <code>npx prisma generate</code> to compile type-safe database access layer.</li>
+            <li>Enforces zero-tolerance static analysis with <code>npx tsc --noEmit</code>.</li>
+            <li>Executes production build (<code>npm run build</code>) to produce clean Node artifacts.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>2. Frontend CI</strong></td>
+        <td>Ubuntu 22.04, Node.js 20, Vite Build Engine</td>
+        <td>
+          <ul>
+            <li>Restores client dependencies via deterministic <code>npm ci</code>.</li>
+            <li>Executes TypeScript compiler across client modules (<code>tsc -b</code>).</li>
+            <li>Runs Vite compiler (<code>vite build</code>), checking bundle optimization.</li>
+            <li>Validates output artifact integrity (verifies <code>dist/index.html</code> existence).</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>3. Continuous Deployment (CD)</strong></td>
+        <td>Vercel Edge Network + Railway Container Engine</td>
+        <td>
+          <ul>
+            <li><strong>Frontend:</strong> Automatically built and deployed to Vercel global edge CDN upon passing main branch checks.</li>
+            <li><strong>Backend:</strong> Containerized and rolled out to Railway with zero-downtime health switching.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>4. Automated Health Probe</strong></td>
+        <td>Automated cURL Smoke Test</td>
+        <td>
+          <ul>
+            <li>Pings live backend health endpoint (<code>GET /health</code>) and asserts HTTP 200.</li>
+            <li>Pings live Vercel frontend URL and verifies edge status code 200.</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>9.2 Zero-Secret Security Paradigm</h2>
+  <p>Rather than storing long-lived personal access tokens or high-risk API keys within GitHub repository secrets, the pipeline utilizes native Git OAuth application webhooks integrated directly between GitHub, Vercel, and Railway. This design guarantees:</p>
+  <ul>
+    <li><strong>Reduced Attack Surface:</strong> Zero cloud deployment credentials exposed in repository settings or CI runner memory.</li>
+    <li><strong>Automated Rollback & Audit:</strong> Any build or type failure in Stage 1 or Stage 2 prevents deployment rollout, preserving production stability.</li>
+    <li><strong>Full Traceability:</strong> Every deployment corresponds immutably to a verified Git commit SHA and signed audit record.</li>
+  </ul>
+
+</body>
+</html>
