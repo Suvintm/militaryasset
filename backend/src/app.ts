@@ -54,6 +54,23 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
+// Root endpoint - System Info & Status
+app.get('/', (_req, res) => {
+  res.status(200).json({
+    system: 'Military Asset Management System (MAMS) - RESTful API',
+    status: 'operational',
+    version: '1.0.1',
+    ministry: 'Ministry of Defence, Government of India',
+    endpoints: {
+      health: '/health',
+      apiBase: '/api/v1',
+      documentation: '/api/v1/docs',
+    },
+    frontendApp: 'https://militaryasset-three.vercel.app',
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // Health check endpoint
 app.get('/health', (_req, res) => {
   res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
