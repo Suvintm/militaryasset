@@ -11,7 +11,6 @@ import {
   Building2, 
   Zap, 
   BarChart3, 
-  CheckCircle2,
   X,
   ShieldAlert,
   ChevronRight,
@@ -26,7 +25,12 @@ import {
   Layers,
   LayoutGrid,
   Clock,
-  Compass
+  Compass,
+  BarChart2,
+  MapPin,
+  User,
+  ShoppingCart,
+  Shield
 } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import apiClient from '../../api/axios';
@@ -757,170 +761,285 @@ export const WelcomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. DEDICATED ROLE-BASED PORTALS ACCESS SECTION */}
-      <section id="roles" className="max-w-7xl mx-auto px-4 sm:px-8 md:px-12 py-16 w-full">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-[11px] font-bold text-amber-600 uppercase tracking-widest bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
-            SECURE ACCESS GATEWAY
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
-            Select Your Operational Role Portal
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-600 mt-2">
-            MAMS enforces strict Role-Based Access Control (RBAC). Choose your credentialed portal below to launch authenticated operations.
-          </p>
+      {/* 5. DEDICATED ROLE-BASED PORTALS ACCESS SECTION (Matches exact official design) */}
+      <section id="roles" className="relative py-16 sm:py-20 px-4 sm:px-8 md:px-12 w-full overflow-hidden bg-[#faf9f6]/70 border-y border-slate-200/60">
+        {/* Background Ambient Silhouettes */}
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-48 sm:w-64 opacity-[0.06] pointer-events-none select-none">
+          <img src="/bg_dome_watermark.png" alt="" className="w-full h-auto object-contain" />
+        </div>
+        <div className="absolute right-4 top-12 w-56 sm:w-72 opacity-[0.08] pointer-events-none select-none">
+          <img src="/bg_fighter_jets.png" alt="" className="w-full h-auto object-contain" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Role 1: System Admin */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-50/60 rounded-full blur-2xl pointer-events-none" />
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-2xl bg-indigo-50 border border-indigo-100 text-indigo-700 flex items-center justify-center">
-                  <Award className="w-6 h-6" />
-                </div>
-                <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-800">
-                  GLOBAL JURISDICTION
-                </span>
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Section Header */}
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            {/* Top Tagline with Mini Tricolor Flag */}
+            <div className="inline-flex items-center gap-2 mb-2">
+              <div className="flex h-1.5 w-6 rounded-full overflow-hidden shadow-2xs">
+                <div className="w-1/3 bg-[#FF9933]" />
+                <div className="w-1/3 bg-white border border-slate-300" />
+                <div className="w-1/3 bg-[#138808]" />
               </div>
-              <h3 className="text-base font-bold text-slate-900">System Administrator</h3>
-              <p className="text-xs text-slate-500 mt-1">Headquarters Strategic Command</p>
-
-              <div className="mt-4 space-y-2 text-xs text-slate-600 border-t border-slate-100 pt-4">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Full nationwide data visibility & all bases</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Master user & base provisioning</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Immutable audit log inspection</span>
-                </div>
-              </div>
-
-              <div className="mt-4 p-3 bg-slate-50 rounded-2xl text-[11px] font-mono text-slate-600 border border-slate-200">
-                <span className="text-slate-400">User:</span> admin@forces.gov <br />
-                <span className="text-slate-400">Pass:</span> Admin@123
-              </div>
+              <span className="text-[10px] sm:text-[11px] font-bold text-slate-700 tracking-[0.2em] uppercase">
+                AUTHENTICATED ACCESS PORTALS
+              </span>
             </div>
 
-            <div className="mt-6 pt-2">
-              <button
-                onClick={() => handleSelectRole('ADMIN')}
-                className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full font-bold text-xs shadow-sm transition active:scale-95 cursor-pointer flex items-center justify-center gap-2"
-              >
-                <span>Launch Admin Portal</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+            {/* Main Heading with Symmetrical Saffron-Green Lines */}
+            <div className="flex items-center justify-center gap-3 sm:gap-6 my-2">
+              <div className="hidden sm:block w-12 sm:w-16 h-0.5 bg-gradient-to-r from-transparent via-[#FF9933] to-[#138808] rounded-full" />
+              <h2 className="text-2xl sm:text-4xl lg:text-[42px] font-black text-slate-950 tracking-tight text-center leading-tight">
+                Choose Your <span className="text-[#c25e00]">Operational Role</span>
+              </h2>
+              <div className="hidden sm:block w-12 sm:w-16 h-0.5 bg-gradient-to-r from-[#FF9933] via-[#138808] to-transparent rounded-full" />
             </div>
+
+            <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto mt-2 leading-relaxed">
+              Access role-based portals with secure, streamlined and mission-ready tools designed for defence asset management and logistics operations.
+            </p>
           </div>
 
-          {/* Role 2: Base Commander */}
-          <div className="bg-white rounded-3xl border-2 border-amber-400/80 p-6 shadow-md hover:shadow-lg transition flex flex-col justify-between relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-amber-50 rounded-full blur-2xl pointer-events-none" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-amber-500 text-slate-950 font-black text-[9px] uppercase px-3 py-0.5 rounded-b-md tracking-wider">
-              PRIMARY FIELD ROLE
-            </div>
-            <div className="mt-1">
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-2xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center">
-                  <ShieldAlert className="w-6 h-6" />
-                </div>
-                <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
-                  BASE-SCOPED ACCESS
-                </span>
+          {/* 3 Role Cards Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch pt-2">
+            
+            {/* CARD 1: SYSTEM ADMINISTRATOR */}
+            <div className="group relative rounded-[28px] bg-gradient-to-b from-[#f0f4f9] via-[#edf2f7] to-[#e8edf4] border border-slate-200/90 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden p-6 sm:p-7">
+              {/* Top-Right Background Artwork: Rashtrapati Bhavan & Indian Flag */}
+              <div className="absolute top-0 right-0 w-44 sm:w-48 h-38 pointer-events-none overflow-hidden select-none z-0">
+                <img 
+                  src="/card_admin_art.png" 
+                  alt="Strategic Command HQ" 
+                  className="w-full h-full object-contain object-top-right opacity-90 transition-transform duration-500 group-hover:scale-105" 
+                />
               </div>
-              <h3 className="text-base font-bold text-slate-900">Base Commander</h3>
-              <p className="text-xs text-slate-500 mt-1">Camp North & Camp South Command</p>
+              
+              {/* Card Content Top */}
+              <div className="relative z-10">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-xl bg-[#1e2a3a] text-white flex items-center justify-center shadow-md">
+                    <Award className="w-5 h-5 text-indigo-200" />
+                  </div>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider px-3.5 py-1 rounded-full bg-blue-100/90 text-blue-900 border border-blue-200/80 shadow-2xs">
+                    GLOBAL JURISDICTION
+                  </span>
+                </div>
 
-              <div className="mt-4 space-y-2 text-xs text-slate-600 border-t border-slate-100 pt-4">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Approve & reject inter-base transfers</span>
+                <div className="mt-4">
+                  <h3 className="text-xl font-bold text-slate-900 leading-tight">
+                    System Administrator
+                  </h3>
+                  <p className="text-xs font-semibold text-slate-500 mt-0.5">
+                    Headquarters Strategic Command
+                  </p>
+                  <p className="text-[11.5px] text-slate-600 leading-relaxed mt-3 min-h-[44px]">
+                    Full nationwide visibility, user & base provisioning, and complete audit oversight across all defence assets.
+                  </p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Assign equipment to soldier service badges</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Record expended ammunition & training costs</span>
-                </div>
-              </div>
 
-              <div className="mt-4 p-3 bg-slate-50 rounded-2xl text-[11px] font-mono text-slate-600 border border-slate-200">
-                <span className="text-slate-400">Cmdr North:</span> cmdr.north@forces.gov <br />
-                <span className="text-slate-400">Cmdr South:</span> cmdr.south@forces.gov
-              </div>
-            </div>
-
-            <div className="mt-6 pt-2 space-y-2">
-              <button
-                onClick={() => handleSelectRole('BASE_COMMANDER', 'north')}
-                className="w-full py-3 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-full font-bold text-xs shadow-sm transition active:scale-95 cursor-pointer flex items-center justify-center gap-2"
-              >
-                <span>Launch Camp North Portal</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-              <button
-                onClick={() => handleSelectRole('BASE_COMMANDER', 'south')}
-                className="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-full font-semibold text-[11px] transition active:scale-95 cursor-pointer flex items-center justify-center gap-2"
-              >
-                <span>Launch Camp South Portal</span>
-                <ChevronRight className="w-3 h-3" />
-              </button>
-            </div>
-          </div>
-
-          {/* Role 3: Logistics Officer */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-50/60 rounded-full blur-2xl pointer-events-none" />
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="h-12 w-12 rounded-2xl bg-emerald-50 border border-emerald-100 text-emerald-700 flex items-center justify-center">
-                  <Truck className="w-6 h-6" />
+                {/* Features List Box */}
+                <div className="bg-white/85 backdrop-blur-xs rounded-xl border border-slate-200/80 p-3.5 mt-3.5 shadow-2xs space-y-2.5">
+                  <div className="flex items-center gap-2.5 text-[11.5px] text-slate-700 font-medium">
+                    <BarChart2 className="w-4 h-4 text-slate-700 shrink-0" />
+                    <span>Full nationwide data visibility & all bases</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-[11.5px] text-slate-700 font-medium">
+                    <Users className="w-4 h-4 text-slate-700 shrink-0" />
+                    <span>Master user & base provisioning</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-[11.5px] text-slate-700 font-medium">
+                    <ShieldCheck className="w-4 h-4 text-slate-700 shrink-0" />
+                    <span>Immutable audit log inspection</span>
+                  </div>
                 </div>
-                <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                  SUPPLY & MOVEMENTS
-                </span>
-              </div>
-              <h3 className="text-base font-bold text-slate-900">Logistics Officer</h3>
-              <p className="text-xs text-slate-500 mt-1">Army Ordnance & Supply Corps</p>
 
-              <div className="mt-4 space-y-2 text-xs text-slate-600 border-t border-slate-100 pt-4">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Record new asset & munition purchases</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Initiate transfers between military bases</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>Execute completed transport deliveries</span>
+                {/* Credentials Box */}
+                <div className="bg-[#edf2f7]/90 rounded-xl p-2.5 border border-slate-200/80 flex items-center gap-3 mt-3 relative overflow-hidden">
+                  <div className="w-8 h-8 rounded-lg bg-[#27384a] text-white flex items-center justify-center shrink-0">
+                    <Lock className="w-4 h-4 text-slate-200" />
+                  </div>
+                  <div className="font-mono text-[11px] text-slate-700 leading-tight">
+                    <div><span className="text-slate-400">User:</span> &nbsp;admin@forces.gov</div>
+                    <div className="mt-0.5"><span className="text-slate-400">Pass:</span> &nbsp;Admin@123</div>
+                  </div>
+                  <img src="/emblem.png" alt="" className="absolute -right-2 -bottom-2 w-14 h-14 opacity-10 pointer-events-none" />
                 </div>
               </div>
 
-              <div className="mt-4 p-3 bg-slate-50 rounded-2xl text-[11px] font-mono text-slate-600 border border-slate-200">
-                <span className="text-slate-400">User:</span> logistics@forces.gov <br />
-                <span className="text-slate-400">Pass:</span> Logistics@123
+              {/* Bottom Button */}
+              <div className="relative z-10 mt-5 pt-1">
+                <button
+                  onClick={() => handleSelectRole('ADMIN')}
+                  className="w-full py-3 px-6 bg-[#101b2b] hover:bg-[#1a2c42] text-white rounded-full font-bold text-xs shadow-md transition active:scale-98 cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <span>Launch Admin Portal</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
 
-            <div className="mt-6 pt-2">
-              <button
-                onClick={() => handleSelectRole('LOGISTICS_OFFICER')}
-                className="w-full py-3 px-4 bg-[#123824] hover:bg-[#0c2718] text-white rounded-full font-bold text-xs shadow-sm transition active:scale-95 cursor-pointer flex items-center justify-center gap-2"
-              >
-                <span>Launch Logistics Portal</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+            {/* CARD 2: BASE COMMANDER (PRIMARY FIELD ROLE) */}
+            <div className="group relative rounded-[28px] bg-gradient-to-b from-[#fdfbf7] via-[#fbf8f1] to-[#f7f2e7] border-2 border-[#f59e0b] shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col justify-between overflow-visible p-6 sm:p-7">
+              {/* Overhanging Badge at Top Center */}
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#d97706] text-white font-extrabold text-[10px] uppercase tracking-widest px-4 py-1 rounded-full shadow-md z-20">
+                PRIMARY FIELD ROLE
+              </div>
+
+              {/* Top-Right Background Artwork: Mountain, Combat Vehicle, Soldiers, Flag */}
+              <div className="absolute top-0 right-0 w-44 sm:w-48 h-38 pointer-events-none overflow-hidden select-none z-0">
+                <img 
+                  src="/card_cmdr_art.png" 
+                  alt="Field Command" 
+                  className="w-full h-full object-contain object-top-right opacity-90 transition-transform duration-500 group-hover:scale-105" 
+                />
+              </div>
+
+              {/* Card Content Top */}
+              <div className="relative z-10">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-xl bg-[#5b4018] text-white flex items-center justify-center shadow-md">
+                    <Shield className="w-5 h-5 text-amber-200" />
+                  </div>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider px-3.5 py-1 rounded-full bg-[#faebd7]/95 text-[#92400e] border border-amber-200/80 shadow-2xs">
+                    BASE-SCOPED ACCESS
+                  </span>
+                </div>
+
+                <div className="mt-4">
+                  <h3 className="text-xl font-bold text-slate-900 leading-tight">
+                    Base Commander
+                  </h3>
+                  <p className="text-xs font-semibold text-slate-500 mt-0.5">
+                    Camp North & Camp South Command
+                  </p>
+                  <p className="text-[11.5px] text-slate-600 leading-relaxed mt-3 min-h-[44px]">
+                    Approve transfers, assign equipment, manage expenditures and maintain operational readiness for your base.
+                  </p>
+                </div>
+
+                {/* Features List Box */}
+                <div className="bg-[#fbf7f0]/95 backdrop-blur-xs rounded-xl border border-amber-200/70 p-3.5 mt-3.5 shadow-2xs space-y-2.5">
+                  <div className="flex items-center gap-2.5 text-[11.5px] text-slate-700 font-medium">
+                    <ArrowLeftRight className="w-4 h-4 text-[#854d0e] shrink-0" />
+                    <span>Approve & reject inter-base transfers</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-[11.5px] text-slate-700 font-medium">
+                    <Users className="w-4 h-4 text-[#854d0e] shrink-0" />
+                    <span>Assign equipment to soldier service badges</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-[11.5px] text-slate-700 font-medium">
+                    <FileText className="w-4 h-4 text-[#854d0e] shrink-0" />
+                    <span>Record expended ammunition & training costs</span>
+                  </div>
+                </div>
+
+                {/* Credentials Box */}
+                <div className="bg-[#f8f3ea]/90 rounded-xl p-2.5 border border-amber-200/70 flex items-center gap-3 mt-3 relative overflow-hidden">
+                  <div className="w-8 h-8 rounded-lg bg-[#6d4c1b] text-amber-200 flex items-center justify-center shrink-0">
+                    <MapPin className="w-4 h-4" />
+                  </div>
+                  <div className="font-mono text-[10.5px] text-slate-700 leading-tight">
+                    <div><span className="text-slate-400">Cmdr North:</span> &nbsp;cmdr.north@forces.gov</div>
+                    <div className="mt-0.5"><span className="text-slate-400">Cmdr South:</span> &nbsp;cmdr.south@forces.gov</div>
+                  </div>
+                  <img src="/emblem.png" alt="" className="absolute -right-2 -bottom-2 w-14 h-14 opacity-10 pointer-events-none" />
+                </div>
+              </div>
+
+              {/* Bottom Buttons: Two Buttons for Camp North and Camp South */}
+              <div className="relative z-10 mt-5 space-y-2 pt-1">
+                <button
+                  onClick={() => handleSelectRole('BASE_COMMANDER', 'north')}
+                  className="w-full py-3 px-6 bg-gradient-to-r from-[#c26200] via-[#b45309] to-[#92400e] hover:brightness-105 text-white rounded-full font-bold text-xs shadow-md transition active:scale-98 cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <span>Launch Camp North Portal</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => handleSelectRole('BASE_COMMANDER', 'south')}
+                  className="w-full py-2.5 px-6 bg-[#fcfaf7] hover:bg-white text-[#92400e] border border-amber-300 rounded-full font-bold text-xs shadow-2xs transition active:scale-98 cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <span>Launch Camp South Portal</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
+
+            {/* CARD 3: LOGISTICS OFFICER */}
+            <div className="group relative rounded-[28px] bg-gradient-to-b from-[#f2f7f3] via-[#ecf4ee] to-[#e4ede7] border border-slate-200/90 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden p-6 sm:p-7">
+              {/* Top-Right Background Artwork: Mountain & Supply Truck Convoy */}
+              <div className="absolute top-0 right-0 w-44 sm:w-48 h-38 pointer-events-none overflow-hidden select-none z-0">
+                <img 
+                  src="/card_logistics_art.png" 
+                  alt="Supply Convoy" 
+                  className="w-full h-full object-contain object-top-right opacity-90 transition-transform duration-500 group-hover:scale-105" 
+                />
+              </div>
+
+              {/* Card Content Top */}
+              <div className="relative z-10">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-xl bg-[#163a26] text-white flex items-center justify-center shadow-md">
+                    <Truck className="w-5 h-5 text-emerald-200" />
+                  </div>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider px-3.5 py-1 rounded-full bg-emerald-100/90 text-emerald-900 border border-emerald-200/80 shadow-2xs">
+                    SUPPLY & MOVEMENTS
+                  </span>
+                </div>
+
+                <div className="mt-4">
+                  <h3 className="text-xl font-bold text-slate-900 leading-tight">
+                    Logistics Officer
+                  </h3>
+                  <p className="text-xs font-semibold text-slate-500 mt-0.5">
+                    Army Ordnance & Supply Corps
+                  </p>
+                  <p className="text-[11.5px] text-slate-600 leading-relaxed mt-3 min-h-[44px]">
+                    Record purchases, initiate transfers and execute transport deliveries between military bases.
+                  </p>
+                </div>
+
+                {/* Features List Box */}
+                <div className="bg-white/85 backdrop-blur-xs rounded-xl border border-emerald-200/70 p-3.5 mt-3.5 shadow-2xs space-y-2.5">
+                  <div className="flex items-center gap-2.5 text-[11.5px] text-slate-700 font-medium">
+                    <ShoppingCart className="w-4 h-4 text-emerald-800 shrink-0" />
+                    <span>Record new asset & munition purchases</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-[11.5px] text-slate-700 font-medium">
+                    <ArrowLeftRight className="w-4 h-4 text-emerald-800 shrink-0" />
+                    <span>Initiate transfers between military bases</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-[11.5px] text-slate-700 font-medium">
+                    <Box className="w-4 h-4 text-emerald-800 shrink-0" />
+                    <span>Execute completed transport deliveries</span>
+                  </div>
+                </div>
+
+                {/* Credentials Box */}
+                <div className="bg-[#ecf4ee]/90 rounded-xl p-2.5 border border-emerald-200/70 flex items-center gap-3 mt-3 relative overflow-hidden">
+                  <div className="w-8 h-8 rounded-lg bg-[#1a442c] text-emerald-200 flex items-center justify-center shrink-0">
+                    <User className="w-4 h-4" />
+                  </div>
+                  <div className="font-mono text-[11px] text-slate-700 leading-tight">
+                    <div><span className="text-slate-400">User:</span> &nbsp;logistics@forces.gov</div>
+                    <div className="mt-0.5"><span className="text-slate-400">Pass:</span> &nbsp;Logistics@123</div>
+                  </div>
+                  <img src="/emblem.png" alt="" className="absolute -right-2 -bottom-2 w-14 h-14 opacity-10 pointer-events-none" />
+                </div>
+              </div>
+
+              {/* Bottom Button */}
+              <div className="relative z-10 mt-5 pt-1">
+                <button
+                  onClick={() => handleSelectRole('LOGISTICS_OFFICER')}
+                  className="w-full py-3 px-6 bg-[#123824] hover:bg-[#0c2718] text-white rounded-full font-bold text-xs shadow-md transition active:scale-98 cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <span>Launch Logistics Portal</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
