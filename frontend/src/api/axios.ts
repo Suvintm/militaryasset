@@ -1,6 +1,17 @@
 import axios from 'axios';
 
-const rawApiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1').trim();
+const getBaseUrl = (): string => {
+  const envUrl = (import.meta.env.VITE_API_URL || '').trim();
+  if (envUrl && envUrl !== '' && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
+    return envUrl;
+  }
+  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    return 'https://militaryasset-production.up.railway.app/api/v1';
+  }
+  return envUrl || 'http://localhost:5000/api/v1';
+};
+
+const rawApiUrl = getBaseUrl();
 const API_BASE_URL = rawApiUrl.endsWith('/api/v1')
   ? rawApiUrl
   : `${rawApiUrl.replace(/\/+$/, '')}/api/v1`;
