@@ -23,6 +23,10 @@ export const ENDPOINTS = {
   DASHBOARD: {
     SUMMARY: '/dashboard/summary',
     NET_MOVEMENT_DETAIL: '/dashboard/net-movement/detail',
+    TRENDS: '/dashboard/trends',
+    CATEGORY_DISTRIBUTION: '/dashboard/category-distribution',
+    RECENT_TRANSACTIONS: '/dashboard/recent-transactions',
+    BASE_SUMMARY: '/dashboard/base-summary',
   },
   AUDIT_LOGS: '/audit-logs',
 };

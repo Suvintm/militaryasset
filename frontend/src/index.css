@@ -11,6 +11,10 @@
   font-family: 'Cinzel', serif;
 }
 
+.font-devanagari {
+  font-family: 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 .font-quote {
   font-family: 'Cormorant Garamond', Georgia, serif;
 }

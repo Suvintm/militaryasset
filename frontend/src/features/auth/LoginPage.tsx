@@ -61,23 +61,7 @@ export const LoginPage: React.FC = () => {
       setAuth(user, accessToken);
       navigate('/dashboard');
     } catch (err: any) {
-      if (!err.response) {
-        // Mock fallback for direct reviewer inspection before backend is spun up
-        let simulatedUser: any = {
-          id: 'demo-user-id',
-          name: selectedRole === 'ADMIN' ? 'General V. Sharma' : selectedRole === 'BASE_COMMANDER' ? (commanderBase === 'north' ? 'Col. R. Singh (Camp North)' : 'Col. K. Menon (Camp South)') : 'Maj. A. Patel',
-          email,
-          role: selectedRole || 'ADMIN',
-          baseId: selectedRole === 'BASE_COMMANDER' ? (commanderBase === 'north' ? 'base-north' : 'base-south') : null,
-          base: selectedRole === 'BASE_COMMANDER' ? { id: 'base-north', name: commanderBase === 'north' ? 'Camp North' : 'Camp South', location: 'Northern Sector' } : null,
-          isActive: true,
-          createdAt: new Date().toISOString()
-        };
-        setAuth(simulatedUser, 'mock-jwt-token-demo');
-        navigate('/dashboard');
-        return;
-      }
-      setError(err.response?.data?.message || 'Login failed. Please check credentials.');
+      setError(err.response?.data?.message || 'Login failed. Please verify credentials and database status.');
     } finally {
       setLoading(false);
     }
